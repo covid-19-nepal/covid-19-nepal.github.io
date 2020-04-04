@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <title>Covid-19 Projection in Nepal</title>
         <style>
-            .container_viewport {position: relative; height:70vh; width:80vw}
+            .container_viewport {position: relative; height:70vh; width:60vw}
             @media only screen and (max-width: 768px) {
               .container_viewport {position: relative; height:70vh; width:100vw}
             }
@@ -108,28 +108,32 @@
           data: data_no_mitigation,
           borderColor:'red',
           borderWidth: 1,
-          fill: false
+          fill: false,
+          pointRadius: 0
           },
           {
           label:'50% mitigation',
           data: data_50_mitigation,
           borderColor:'yellow',
           borderWidth: 1,
-          fill: false
+          fill: false,
+          pointRadius: 0
           },
           {
           label:'75% mitigation',
           data: data_75_mitigation,
           borderColor:'blue',
           borderWidth: 1,
-          fill: false
+          fill: false,
+          pointRadius: 0
           },
           {
           label:'90% mitigation',
           data: data_90_mitigation,
           borderColor:'green',
           borderWidth: 1,
-          fill: false
+          fill: false,
+          pointRadius: 0
           },
         ]
       },
