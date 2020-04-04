@@ -17,11 +17,20 @@
         <div class="container">
             <canvas id="myChart2"></canvas>
         </div>
+        <div class="container">
+          <canvas id="myChart3"></canvas>
+      </div>
+      <div class="container">
+          <canvas id="myChart4"></canvas>
+      </div>
         <script>
 
-    plotChartType1();
-    
-    function plotChartType1(){
+    plotChartType('Infected', 'National', 'infected', 'myChart');
+    plotChartType('Deaths', 'National', 'chilam', 'myChart2');
+    plotChartType('DeathsPerDay', 'National', 'chilamPerDay', 'myChart3');
+    plotChartType('Recovered', 'National', 'recovered', 'myChart4');
+
+    function plotChartType(name, region, data_type_in_csv, plot_id){
       // Get national infected:
     var data_no_mitigation = [];
     var data_50_mitigation = [];
@@ -33,18 +42,18 @@
       d3.csv(name).then(function(data) {
       data.forEach(function(d) {
         let x = +d.day;
-        let y = +d.infected/1000;
+        let y = +d[data_type_in_csv]/1000;
         store_at.push({x: x,y: y});
       });
       callback();
-    });
-    }
-
+      });
+   }
+  
   async.parallel([
-    function(callback) { readCSV('/scripts/data/National_No.csv', data_no_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/National_50.csv', data_50_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/National_75.csv', data_75_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/National_90.csv', data_90_mitigation, callback); }
+    function(callback) { readCSV('/scripts/data/'+region+'_No.csv', data_no_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/'+region+'_50.csv', data_50_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/'+region+'_75.csv', data_75_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/'+region+'_90.csv', data_90_mitigation, callback); }
   ], function done(err, results) {
     console.log("loaded all csv");
     console.log(data_no_mitigation[20]);
@@ -53,7 +62,7 @@
   });
 
   function plotChart() {
-    let myChart = document.getElementById('myChart').getContext('2d');
+    let myChart = document.getElementById(plot_id).getContext('2d');
     // Global Options
     Chart.defaults.global.defaultFontFamily = 'Lato';
     Chart.defaults.global.defaultFontSize = 18;
@@ -106,7 +115,7 @@
         },
         title:{
           display:true,
-          text:'Projected Infected Population Nepal',
+          text:'Projected Covid-19 ' + name + '(' + region + ')',
           fontSize:25
         },
         legend:{
@@ -130,7 +139,7 @@
       }
     });
   }
-    }
+}
         </script>
     </body>
 </html>

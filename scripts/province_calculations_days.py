@@ -21,7 +21,6 @@ sns.set_style("whitegrid")
 
 # All key value pairs
 
-
 # 2011 actual population
 population = {
                 "National": 26494504,
@@ -58,7 +57,7 @@ ylabels = {
 workdir = os.getcwd()
 plotdir = os.path.join(workdir, "plots")
 datadir = os.path.join(workdir, "data")
-outfileprefix = "Infected"
+outfileprefix = "Recovered"
 
 # Make sure directories exist, otherwise create
 for dir in [plotdir, datadir]:
