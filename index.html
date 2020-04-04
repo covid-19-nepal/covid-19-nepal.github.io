@@ -7,28 +7,53 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.0/async.min.js"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <title>My Chart.js Chart</title>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Covid-19 Projection in Nepal</title>
     </head>
     <body>
-        <div class="container">
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="container">
-            <canvas id="myChart2"></canvas>
-        </div>
-        <div class="container">
-          <canvas id="myChart3"></canvas>
+      <div class="dropdown" align="center">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Region
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#" onclick="toggleRegion('Whole Nepal');">National</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-1');">Province 1</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-2');">Province 2</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-3');">Province 3</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-4');">Province 4</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-5');">Province 5</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-6');">Province 6</a></li>
+          <li><a href="#" onclick="toggleRegion('Province-7');">Province 7</a></li>
+        </ul>
+      </div>
+    </div>
+
+      <div class="container">
+          <canvas id="myChart"></canvas>
       </div>
       <div class="container">
-          <canvas id="myChart4"></canvas>
+          <canvas id="myChart2"></canvas>
       </div>
-        <script>
+      <div class="container">
+        <canvas id="myChart3"></canvas>
+    </div>
+    <div class="container">
+        <canvas id="myChart4"></canvas>
+    </div>
 
-    plotChartType('Infected', 'National', 'infected', 'myChart');
-    plotChartType('Deaths', 'National', 'chilam', 'myChart2');
-    plotChartType('DeathsPerDay', 'National', 'chilamPerDay', 'myChart3');
-    plotChartType('Recovered', 'National', 'recovered', 'myChart4');
+    <script>
+
+    toggleRegion('National')
+    
+    function toggleRegion(region) {
+      plotChartType('Infected', region, 'infected', 'myChart');
+      plotChartType('Deaths', region, 'chilam', 'myChart2');
+      plotChartType('DeathsPerDay', region, 'chilamPerDay', 'myChart3');
+      plotChartType('Recovered', region, 'recovered', 'myChart4');
+    }
+
 
     function plotChartType(name, region, data_type_in_csv, plot_id){
       // Get national infected:
@@ -140,6 +165,6 @@
     });
   }
 }
-        </script>
-    </body>
+    </script>
+  </body>
 </html>
