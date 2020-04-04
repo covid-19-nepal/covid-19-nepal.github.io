@@ -12,6 +12,12 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>  
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <title>Covid-19 Projection in Nepal</title>
+        <style>
+            .container_viewport {position: relative; height:70vh; width:80vw}
+            @media only screen and (max-width: 768px) {
+              .container_viewport {position: relative; height:70vh; width:100vw}
+            }
+        </style>
     </head>
     <body>
       <div class="dropdown" align="center">
@@ -30,16 +36,16 @@
       </div>
     </div>
 
-      <div class="container mb-2" style="position: relative; height:70vh; width:80vw">
+      <div class="container container_viewport mb-2">
           <canvas id="myChart"></canvas>
       </div>
-      <div class="container mb-2" style="position: relative; height:70vh; width:80vw">
+      <div class="container container_viewport mb-2">
           <canvas id="myChart2"></canvas>
       </div>
-      <div class="container mb-2" style="position: relative; height:70vh; width:80vw">
+      <div class="container container_viewport mb-2">
         <canvas id="myChart3"></canvas>
     </div>
-    <div class="container mb-2" style="position: relative; height:70vh; width:80vw">
+    <div class="container container_viewport mb-2">
         <canvas id="myChart4"></canvas>
     </div>
 
