@@ -1,145 +1,136 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <link href="/build/nv.d3.css" rel="stylesheet" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
-    <script src="/build/nv.d3.js"></script>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/async/3.2.0/async.min.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <title>My Chart.js Chart</title>
+    </head>
+    <body>
+        <div class="container">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="container">
+            <canvas id="myChart2"></canvas>
+        </div>
+        <script>
 
-    <style>
-        text {
-            font: 12px sans-serif;
-        }
-        svg {
-            display: block;
-        }
-        html, body, #chart1, svg {
-            margin: 0px;
-            padding: 0px;
-            height: 100%;
-            width: 100%;
-        }
+    plotChartType1();
+    
+    function plotChartType1(){
+      // Get national infected:
+    var data_no_mitigation = [];
+    var data_50_mitigation = [];
+    var data_75_mitigation = [];
+    var data_90_mitigation = [];
 
-        .dashed {
-            stroke-dasharray: 5,5;
-        }
-    </style>
-</head>
-<body class='with-3d-shadow with-transitions'>
-<div style="position:absolute; top: 0; left: 0;">
-    <button onclick="randomizeFillOpacity();">Randomize fill opacity</button>
-    <button onclick="expandLegend();">Expand/Contract Legend</button>
-    <script>
-        var expandLegend = function() {
-            var exp = chart.legend.expanded();
-            chart.legend.expanded(!exp);
-            chart.update();
-        }
-    </script>
-</div>
-<div id="chart1"></div>
-
-<script>
-    // Wrapping in nv.addGraph allows for '0 timeout render', stores rendered charts in nv.graphs, and may do more in the future... it's NOT required
-    var chart;
-    var data;
-
-    var randomizeFillOpacity = function() {
-        var rand = Math.random(0,1);
-        for (var i = 0; i < 100; i++) { // modify sine amplitude
-            data[4].values[i].y = Math.sin(i/(5 + rand)) * .4 * rand - .25;
-        }
-        data[4].fillOpacity = rand;
-        chart.update();
-    };
-
-    nv.addGraph(function() {
-        chart = nv.models.lineChart()
-            .options({
-                duration: 300,
-                useInteractiveGuideline: true
-            })
-        ;
-
-        // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the parent chart, so need to chain separately
-        chart.xAxis
-            .axisLabel("Time (s)")
-            .tickFormat(d3.format(',.1f'))
-            .staggerLabels(true)
-        ;
-
-        chart.yAxis
-            .axisLabel('Voltage (v)')
-            .tickFormat(function(d) {
-                if (d == null) {
-                    return 'N/A';
-                }
-                return d3.format(',.2f')(d);
-            })
-        ;
-
-        data = sinAndCos();
-
-        d3.select('#chart1').append('svg')
-            .datum(data)
-            .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
+    function readCSV(name, store_at, callback) {
+      console.log("called read csv");
+      d3.csv(name).then(function(data) {
+      data.forEach(function(d) {
+        let x = +d.day;
+        let y = +d.infected/1000;
+        store_at.push({x: x,y: y});
+      });
+      callback();
     });
-
-    function sinAndCos() {
-        var sin = [],
-            sin2 = [],
-            cos = [],
-            rand = [],
-            rand2 = []
-            ;
-
-        for (var i = 0; i < 100; i++) {
-            sin.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) }); //the nulls are to show how defined works
-            sin2.push({x: i, y: Math.sin(i/5) * 0.4 - 0.25});
-            cos.push({x: i, y: .5 * Math.cos(i/10)});
-            rand.push({x:i, y: Math.random() / 10});
-            rand2.push({x: i, y: Math.cos(i/10) + Math.random() / 10 })
-        }
-
-        return [
-            {
-                area: true,
-                values: sin,
-                key: "Sine Wave",
-                color: "#ff7f0e",
-                strokeWidth: 4,
-                classed: 'dashed'
-            },
-            {
-                values: cos,
-                key: "Cosine Wave",
-                color: "#2ca02c"
-            },
-            {
-                values: rand,
-                key: "Random Points",
-                color: "#2222ff"
-            },
-            {
-                values: rand2,
-                key: "Random Cosine",
-                color: "#667711",
-                strokeWidth: 3.5
-            },
-            {
-                area: true,
-                values: sin2,
-                key: "Fill opacity",
-                color: "#EF9CFB",
-                fillOpacity: .1
-            }
-        ];
     }
 
-</script>
-</body>
+  async.parallel([
+    function(callback) { readCSV('/scripts/data/National_No.csv', data_no_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/National_50.csv', data_50_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/National_75.csv', data_75_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data/National_90.csv', data_90_mitigation, callback); }
+  ], function done(err, results) {
+    console.log("loaded all csv");
+    console.log(data_no_mitigation[20]);
+    console.log(data_90_mitigation[100]);
+    plotChart();
+  });
+
+  function plotChart() {
+    let myChart = document.getElementById('myChart').getContext('2d');
+    // Global Options
+    Chart.defaults.global.defaultFontFamily = 'Lato';
+    Chart.defaults.global.defaultFontSize = 18;
+    Chart.defaults.global.defaultFontColor = '#777';
+
+    let massPopChart = new Chart(myChart, {
+      type: 'scatter', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+      data:{
+        datasets:[
+          {
+          label:'No mitigation',
+          data: data_no_mitigation,
+          borderColor:'red',
+          borderWidth: 1,
+          },
+          {
+          label:'50% mitigation',
+          data: data_50_mitigation,
+          borderColor:'yellow',
+          borderWidth: 1
+          },
+          {
+          label:'75% mitigation',
+          data: data_75_mitigation,
+          borderColor:'blue',
+          borderWidth: 1
+          },
+          {
+          label:'90% mitigation',
+          data: data_90_mitigation,
+          borderColor:'green',
+          borderWidth: 1
+          },
+        ]
+      },
+      options:{
+        scales: {
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Days since 1st infection'
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Population (In Thousand)'
+            }
+          }]
+        },
+        title:{
+          display:true,
+          text:'Projected Infected Population Nepal',
+          fontSize:25
+        },
+        legend:{
+          display:true,
+          position:'right',
+          labels:{
+            fontColor:'#000'
+          }
+        },
+        layout:{
+          padding:{
+            left:50,
+            right:0,
+            bottom:0,
+            top:0
+          }
+        },
+        tooltips:{
+          enabled:true
+        }
+      }
+    });
+  }
+    }
+        </script>
+    </body>
 </html>
