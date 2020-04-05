@@ -29,12 +29,14 @@
         </style>
     </head>
     <body>
+    
 
       <div class="container">
         <div class="jumbotron" align="center">
           <h1>Covid-19 Projection in Nepal</h1>
         </div> 
-      
+
+
         <!-- projection -->
       <div class="container container_viewport mb-2" id="projection">
       <div class="dropdown" align="center">
@@ -92,40 +94,27 @@
   </ul>
   
 
-<h3>  Methods </h3>
-  <p> We used the SIR model, which is the following system of quadratic ordinary differential equations: For the prediction of future cases, recoveries and deaths for our study, SRI model is considered. (Weiss, H. H. (2013). “The SIR model and the Foundations of Public Health.” Materials Matemàtics, 1–17.) The SIR model is the following system of quadratic ordinary differential equations:</p>
-  <sub>dSdt=-βSI							(1)</sub></br>
-  <sub>dIdt=βSI-γI							(2)</sub></br>
-  <sub>dRdt=γI							(3)</sub></br>
-  <sub> where the disease transmission rate, β> 0 and the recovery rate, γ > 0, S is the susceptible population, I is the number of infected population, R is the recovered population.</sub></br>
-  <sub> By solving these equations, following equations for each time interval are deduced:</br>
-  Sn=Sn-1-Sn-1Sβ.In-1					(4)</br>
-  In=In-1+Sn-1Sβ.In-1-γ.In-1			(5)</br>
-  Rn=Rn-1+γ.In-1						(6)</br>
-  Where n is the nth time point and n-1 is the time point before n.
-  </sub></br></br>
-
-  <h3>Source of Data</h3>
-  
-  TBD..</br>
-
+  <div class="btn-group flex-wrap">
+    <button type="button" id='btn_methods'class="btn btn-outline-primary" onclick="location.href='methods.html'">Methods</button>
+    <button type="button" id='btn_methods'class="btn btn-outline-primary" onclick="location.href='datasource.html'">Data Source</button>
+    <button type="button" id='btn_methods'class="btn btn-outline-primary" onclick="location.href='additional.html'">Other Resources</button>
+  </div>
+</br>
+<hr>
+</br>
   <h3>Disclaimer</h3>
   The above displayed data and predictions are results of estimation and modelling. Please contact us before using our data for major decisions. 
 
-</br>
-  <h3>Additional Resources:</h3>
 
-  <ul>
-    <li>  <a href='https://coronavirus.jhu.edu/map.html'>https://coronavirus.jhu.edu/map.html</a></li>
-    <li>  <a href='https://covid19.mohp.gov.np/'>https://covid19.mohp.gov.np/</a></li>
-    <li>  <a href="https://www.worldometers.info/coronavirus/">https://www.worldometers.info/coronavirus/</a></li>
-    <li>  <a href="https://www.cdc.gov/coronavirus/2019-nCoV/index.html">https://www.cdc.gov/coronavirus/2019-nCoV/index.html</a></li>
-    <li>  <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019">https://www.who.int/emergencies/diseases/novel-coronavirus-2019</a></li>
-    </ul>
+
 
 </div>
 
+
+
 </div>
+
+
 
     <!-- Content -->
 
