@@ -17,52 +17,83 @@
             @media only screen and (max-width: 768px) {
               .container_viewport {position: relative; height:70vh; width:100vw}
             }
+            div.jumbotron {
+              background-color: whitesmoke;
+            }
+            #button-group {
+              margin: auto;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+            }
         </style>
     </head>
     <body>
+
+      <div class="container">
+        <div class="jumbotron" align="center">
+          <h1>Covid-19 Projection in Nepal</h1>
+        </div> 
+      
+        <!-- projection -->
+      <div class="container container_viewport mb-2" id="projection">
       <div class="dropdown" align="center">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Region
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id='selectedRegion'>Select Region
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a href="#" onclick="toggleRegion('Whole Nepal');">National</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-1');">Province 1</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-2');">Province 2</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-3');">Province 3</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-4');">Province 4</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-5');">Province 5</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-6');">Province 6</a></li>
-          <li><a href="#" onclick="toggleRegion('Province-7');">Province 7</a></li>
+          <li><a href="#" onclick="updateRegion('National');">Whole Nepal</a></li>
+          <li><a href="#" onclick="updateRegion('Province-1');">Province 1</a></li>
+          <li><a href="#" onclick="updateRegion('Province-2');">Province 2</a></li>
+          <li><a href="#" onclick="updateRegion('Province-3');">Province 3</a></li>
+          <li><a href="#" onclick="updateRegion('Province-4');">Province 4</a></li>
+          <li><a href="#" onclick="updateRegion('Province-5');">Province 5</a></li>
+          <li><a href="#" onclick="updateRegion('Province-6');">Province 6</a></li>
+          <li><a href="#" onclick="updateRegion('Province-7');">Province 7</a></li>
         </ul>
       </div>
+
+    </br>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div class="btn-group flex-wrap">
+          <button type="button" id='btn_infected'class="btn btn-outline-primary" onclick="updateDisplayAndType('Total Infected', 'infected');">Infected</button>
+          <button type="button" id='btn_chilam' class="btn btn-outline-primary" onclick="updateDisplayAndType('Cumulative Deaths', 'chilam');">Death</button>
+          <button type="button" id='btn_chilamPerDay' class="btn btn-outline-primary" onclick="updateDisplayAndType('Deaths per day', 'chilamPerDay');">Death/day</button>
+          <button type="button" id='btn_recovered' class="btn btn-outline-primary" onclick="updateDisplayAndType('Total Recovered', 'recovered');">Recovered</button>
+       </div>
+      </div>
+    </div>
+    </br>
+
+    <canvas id="myChart"></canvas>
     </div>
 
-      <div class="container container_viewport mb-2">
-          <canvas id="myChart"></canvas>
-      </div>
-      <div class="container container_viewport mb-2">
-          <canvas id="myChart2"></canvas>
-      </div>
-      <div class="container container_viewport mb-2">
-        <canvas id="myChart3"></canvas>
-    </div>
-    <div class="container container_viewport mb-2">
-        <canvas id="myChart4"></canvas>
-    </div>
+  </div>
 
     <script>
+    var current_region = "National";
+    var current_display_name = "Total Infected";
+    var current_csv_type = "infected";
+    refresh();
 
-    toggleRegion('National')
-    
-    function toggleRegion(region) {
-      plotChartType('Infected', region, 'infected', 'myChart');
-      plotChartType('Deaths', region, 'chilam', 'myChart2');
-      plotChartType('DeathsPerDay', region, 'chilamPerDay', 'myChart3');
-      plotChartType('Recovered', region, 'recovered', 'myChart4');
+    function updateRegion(region) {
+      current_region = region;
+      refresh();
+    }
+
+    function updateDisplayAndType(display, type) {
+      current_display_name = display;
+      current_csv_type = type;
+      document.getElementById('btn_chilam').aria_pressed='true';
+      refresh();
+    }
+        
+    function refresh() {
+      plotChartType(current_display_name, current_region, current_csv_type, 'myChart');
     }
 
 
-    function plotChartType(name, region, data_type_in_csv, plot_id){
-      // Get national infected:
+    function plotChartType(display_name, region, data_type_in_csv, plot_id){
     var data_no_mitigation = [];
     var data_50_mitigation = [];
     var data_75_mitigation = [];
@@ -149,13 +180,13 @@
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Population (In Thousand)'
+              labelString: 'Population (in thousand)'
             }
           }]
         },
         title:{
           display:true,
-          text:'Projected Covid-19 ' + name + '(' + region + ')',
+          text: display_name + ' (' + region + ')',
           fontSize:25
         },
         legend:{
