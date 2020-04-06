@@ -34,18 +34,35 @@
               flex-direction: row;
               justify-content: center;
             }
+            #botoes li{
+              display: inline-block;
+              list-style-type: none;
+              padding-right: 20px;
+              vertical-align: middle;
+            }
         </style>
     </head>
     <body>
     
 
       <div class="container">
-          <div class="col-sm-10" style="background-color:white;">
-            <div class="jumbotron" align="center">
-              <img src="nepalflag.png" alt="Flag of Nepal" height="60">
-              <h1>Covid-19 Projection for Nepal</h1>
-            </div> 
-        </div>
+          <div class='jumbotron'>
+            <ul id="botoes">
+              <li><img src="nepalflag.png" alt="Flag of Nepal" height="50"></li>
+              <li><h2> Covid-19 Projection for Nepal</h2></li>
+            </ul>
+            <ul id="botoes">
+              <li class="nav-item">
+                <a class="nav-link" href="methods.html">Methods</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="datasource.html">Data Source</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="additional.html">Other Resources</a>
+              </li>
+            </ul>
+          </div>
       </div>
 
         <!-- projection -->
@@ -94,36 +111,20 @@
 
   This project was created by a team of Nepali scholars together with a large number of experts within and outside of Nepal.
 </br>
-    <li> Birendra Adhikari (Senior Chemical Engineer, USA) </li>
-    <li> Vaskar Dahal (Data Scientist, USA) </li>
-    <li> Suraj Pathak (Entrepreneur, Singapore/Australia) </li>
-    <li> Dinesh Neupane (Public Health Expert, Nepal Development Society) </li>
-  <br> 
-  For a detailed list of contributors, please refer our full manuscript. 
+    <li> Dinesh Neupane (Epidemiologist, John Hopkins University) </li>
+    <li> Birendra Adhikari (Research Scientist) </li>
+    <li> Vaskar Dahal (Data Scientist) </li>
+    <li> Suraj Pathak (Data Scientist) </li>
+<br> 
+  For a detailed list of contributors, please refer our full manuscript (coming soon..). 
 </div>
-
-
-  
-  <hr>
-
-  <div class="container">
-    <button type="button" id='btn_methods'class="btn btn-primary" onclick="location.href='methods.html'">Methods</button>
-    <br>
-    <br>
-    <button type="button" id='btn_methods'class="btn btn-primary" onclick="location.href='datasource.html'">Data Source</button>
-    <br>
-    <br>
-    <button type="button" id='btn_methods'class="btn btn-primary" onclick="location.href='additional.html'">Other Resources</button>
-  </div>
 
 </br>
 <hr>
 </br>
   <h3>Disclaimer</h3>
-  The above displayed data and predictions are results of estimation and modelling. Please contact us before using our data for major decisions. 
 
-
-
+  The above displayed data and predictions are results of estimation and modelling. Please contact <a href='mailto:neupane.dinesh@gmail.com'>us</a> before using our data for major decisions.
 
 </div>
 
