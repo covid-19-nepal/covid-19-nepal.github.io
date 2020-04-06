@@ -40,18 +40,25 @@
               padding-right: 20px;
               vertical-align: middle;
             }
+            html {
+              scroll-behavior: smooth;
+            }
         </style>
     </head>
     <body>
     
 
-      <div class="container">
-          <div class='jumbotron'>
+      <!-- <div class="container">
+          <div class='jumbotron jumbotron-fluid'>
             <ul id="botoes">
               <li><img src="nepalflag.png" alt="Flag of Nepal" height="50"></li>
               <li><h2> Covid-19 Projection for Nepal</h2></li>
             </ul>
+            <hr class="my-4">
             <ul id="botoes">
+              <li class="nav-item">
+                <a class="nav-link" href="#about_us">About Us</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="methods.html">Methods</a>
               </li>
@@ -63,7 +70,35 @@
               </li>
             </ul>
           </div>
+      </div> -->
+
+      
+      <!-- As a heading -->
+      <div class="container" align="center">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <span class="navbar-brand mb-0 h1"> Covid-19 Projections for Nepal</span>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#about_us">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="methods.html">Methods</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="datasource.html">Data Source</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="additional.html">Other Resources</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
+      
 
         <!-- projection -->
       <div class="container container_viewport mb-2" id="projection">
@@ -106,7 +141,7 @@
 <hr>
   
 
-<div class="container">
+<div class="container" id='about_us'>
   <h3>About us</h3>
 
   This project was created by a team of Nepali scholars together with a large number of experts within and outside of Nepal.
@@ -141,6 +176,11 @@
     var current_display_name = "Total Infected";
     var current_csv_type = "infected";
     refresh();
+
+    function scrollTo(id) {
+      let element = document.getElementById(id);
+      element.scrollIntoView(true);
+    }
 
     function updateRegion(region) {
       current_region = region;
