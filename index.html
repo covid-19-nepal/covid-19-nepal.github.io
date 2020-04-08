@@ -172,6 +172,8 @@
     var current_csv_type = "infected";
     var current_infection="0.1";
     var current_infection_display="Low Infection (10%)";
+    var yAxisDivisor = 100000;
+    var yAxisName = "Population (in 100 thousand)";
 
     refresh();
 
@@ -194,6 +196,13 @@
     function updateDisplayAndType(display, type) {
       current_display_name = display;
       current_csv_type = type;
+      if(current_csv_type == "infected" || current_csv_type == "recovered") {
+        yAxisDivisor = 1000000;
+        yAxisName = "Population (in 100 thousand)";
+      } else {
+        yAxisDivisor = 1000;
+        yAxisName = "Population (in thousand)";
+      }
       refresh();
     }
         
@@ -212,7 +221,7 @@
       d3.csv(name).then(function(data) {
       data.forEach(function(d) {
         let x = +d.day;
-        let y = +d[data_type_in_csv]/100000;
+        let y = +d[data_type_in_csv]/yAxisDivisor;
         store_at.push({x: x,y: y});
       });
       callback();
@@ -287,7 +296,7 @@
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Population (in 100 thousand)'
+              labelString: yAxisName
             }
           }]
         },
