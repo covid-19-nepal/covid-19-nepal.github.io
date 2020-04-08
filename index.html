@@ -21,10 +21,21 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <title>Covid-19 Projection Nepal</title>
         <style>
-            .container_viewport {position: relative; height:70vh; width:60vw}
+            .container_viewport {position: relative; height:40vh; width:100vw}
             @media only screen and (max-width: 768px) {
-              .container_viewport {position: relative; height:70vh; width:100vw}
+              .container_viewport {position: relative; height:40vh; width:100vw}
             }
+            canvas {
+              border: 1px dotted red;
+            }
+
+            .chart-container {
+              position: relative;
+              margin: auto;
+              height: 80vh;
+              width: 80vw;
+            }
+
             div.jumbotron {
               background-color: whitesmoke;
             }
@@ -74,7 +85,7 @@
       </div>
       
 
-        <!-- projection -->
+        <!-- region -->
       <div class="container container_viewport mb-2" id="projection">
       <div class="dropdown" align="center">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id='selectedRegion'>Select Region
@@ -94,6 +105,7 @@
     </br>
 
     <div class="row">
+      <!-- category -->
       <div class="col-md-12 text-center">
         <div class="btn-group flex-wrap">
           <button type="button" id='btn_infected'class="btn btn-outline-primary" onclick="updateDisplayAndType('Total Infected', 'infected');">Infected</button>
@@ -101,11 +113,20 @@
           <button type="button" id='btn_chilamPerDay' class="btn btn-outline-primary" onclick="updateDisplayAndType('Deaths per day', 'chilamPerDay');">Death/day</button>
           <button type="button" id='btn_recovered' class="btn btn-outline-primary" onclick="updateDisplayAndType('Total Recovered', 'recovered');">Recovered</button>
        </div>
+       <!-- Infection -->
+       <div class="col-md-12 text-center">
+        <div class="btn-group flex-wrap">
+          <button type="button" class="btn btn-outline-primary" onclick="updateInfection('0.1', 'Low Infection (10%)');">Low Infection</button>
+          <button type="button" class="btn btn-outline-primary" onclick="updateInfection('0.3', 'Medium Infection (30%)');">Medium Infection</button>
+          <button type="button" class="btn btn-outline-primary" onclick="updateInfection('0.5', 'High Infection (50%)');">High Infection</button>
+       </div>
       </div>
-    </div>
+      </div>
     </br>
 
-    <canvas id="myChart"></canvas>
+    <div class="chart-container">
+      <canvas id="myChart"></canvas>
+  </div>
   </br>
 </br>
 
@@ -146,9 +167,14 @@
     <!-- Content -->
 
     <script>
+
+      // Global variables
     var current_region = "National";
     var current_display_name = "Total Infected";
     var current_csv_type = "infected";
+    var current_infection="0.1";
+    var current_infection_display="Low Infection (10%)";
+
     refresh();
 
     function scrollTo(id) {
@@ -161,30 +187,34 @@
       refresh();
     }
 
+    function updateInfection(infection, display) {
+      current_infection = infection;
+      current_infection_display = display;
+      refresh();
+    }
+
     function updateDisplayAndType(display, type) {
       current_display_name = display;
       current_csv_type = type;
-      document.getElementById('btn_chilam').aria_pressed='true';
       refresh();
     }
         
     function refresh() {
-      plotChartType(current_display_name, current_region, current_csv_type, 'myChart');
+      plotChartType(current_display_name, current_region, current_infection, current_infection_display, current_csv_type, 'myChart');
     }
 
 
-    function plotChartType(display_name, region, data_type_in_csv, plot_id){
+    function plotChartType(display_name, region, infection, infection_display, data_type_in_csv, plot_id){
     var data_no_mitigation = [];
     var data_50_mitigation = [];
     var data_75_mitigation = [];
     var data_90_mitigation = [];
 
     function readCSV(name, store_at, callback) {
-      console.log("called read csv");
       d3.csv(name).then(function(data) {
       data.forEach(function(d) {
         let x = +d.day;
-        let y = +d[data_type_in_csv]/1000;
+        let y = +d[data_type_in_csv]/100000;
         store_at.push({x: x,y: y});
       });
       callback();
@@ -192,19 +222,18 @@
    }
   
   async.parallel([
-    function(callback) { readCSV('/scripts/data/'+region+'_No.csv', data_no_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/'+region+'_50.csv', data_50_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/'+region+'_75.csv', data_75_mitigation, callback); },
-    function(callback) { readCSV('/scripts/data/'+region+'_90.csv', data_90_mitigation, callback); }
+    function(callback) { readCSV('/scripts/data2/'+region+'_No_'+infection+'.csv', data_no_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data2/'+region+'_50_'+infection+'.csv', data_50_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data2/'+region+'_75_'+infection+'.csv', data_75_mitigation, callback); },
+    function(callback) { readCSV('/scripts/data2/'+region+'_90_'+infection+'.csv', data_90_mitigation, callback); }
   ], function done(err, results) {
-    console.log("loaded all csv");
-    console.log(data_no_mitigation[20]);
-    console.log(data_90_mitigation[100]);
     plotChart();
   });
 
   function plotChart() {
-    let myChart = document.getElementById(plot_id).getContext('2d');
+    let ctx = document.getElementById(plot_id)
+    let myChart = ctx.getContext('2d');
+
     // Global Options
     Chart.defaults.global.defaultFontFamily = 'Lato';
     Chart.defaults.global.defaultFontSize = 18;
@@ -225,7 +254,7 @@
           {
           label:'50% mitigation',
           data: data_50_mitigation,
-          borderColor:'yellow',
+          borderColor:'purple',
           borderWidth: 2,
           fill: false,
           pointRadius: 0
@@ -260,13 +289,13 @@
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Population (in thousand)'
+              labelString: 'Population (in 100 thousand)'
             }
           }]
         },
         title:{
           display:true,
-          text: display_name + ' (' + region + ')',
+          text: display_name + ' (' + region + ') ' + infection_display,
           fontSize:25
         },
         legend:{
